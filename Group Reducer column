@@ -1,0 +1,11 @@
+link of the code:(https://code.earthengine.google.com/4f7a9b7d2b630ab85772c1adb9f52a6f)
+
+code of group reducer:
+var reducedValue = table.reduceColumns({
+  selectors: ["F_TL","F_00_04","T_TL","ADM3_NAME"],
+  reducer: ee.Reducer.mean().repeat(3).group({
+    groupField: 3,
+    groupName: "upazilla"
+  })
+});
+print(reducedValue)
