@@ -1,0 +1,21 @@
+#code :
+var upz= table.filter(ee.Filter.eq("NAME_3","Matlab"));
+print(upz);
+var image = ee.ImageCollection('MODIS/061/MCD12Q1')
+.filterDate("2021-01-01","2021-12-31")
+.filterBounds(upz)
+.first()
+.clip(upz);
+print(image);
+var landcover = image.select('LC_Type1','LC_Type2');
+var areaimage = landcover.multiply(ee.Image.pixelArea()).addBands(image);
+var lcArea = landcover.reduceRegions({
+                collection: upz,
+                reducer: ee.Reducer.sum().group({
+                groupField: 1, 
+                  groupName: "Class"
+                }),
+                scale: 10
+              });
+print(lcArea);
+Map.addLayer(image);
